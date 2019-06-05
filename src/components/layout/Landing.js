@@ -1,5 +1,5 @@
 import React from 'react';
-import { getTasks } from '../../redux/actions/getTasks';
+import { getTasks } from '../../redux/actions/tasks';
 import { connect } from 'react-redux';
 import Pagination from 'react-pagination-library';
 import 'react-pagination-library/build/css/index.css';
@@ -12,51 +12,43 @@ class Landing extends React.Component {
 
         this.state = {
             currentPage: 1,
-            tasks: null
-        }
+            totalPages: 1,
+            data: []
+            
+        };
     }
 
     componentDidMount() {
         this.props.onFetchData()
-            .then(() => {
+            .then(data => {
                 this.setState({
-                    tasks: this.props.task.task.message.tasks
-                });
-
-                console.log(this.state.tasks)
-            })
-    }
+                    data: data.payload.message.tasks,
+                    totalPages: Math.ceil(data.payload.message.total_task_count / 3)
+                })
+            });
+    };
 
     changeCurrentPage = numPage => {
         this.setState({ currentPage: numPage });
-        //fetch a data
-        //or update a query to get data
-    };
-
-    renderTaskItem() {
-        return this.state.tasks.map(item => {
-            return (
-                <div className="col-sm-4" key={item.id}>
-                    <TaskItem/>
-                </div>
-            )
-        })
     };
 
     render() {
         return (
             <div className="landing">
                 <div className="row m-5">
-                    {/* { this.renderTaskItem() } */}
+                    <TaskItem tasks={this.state.data} page={this.state.currentPage} />
                 </div>
                 <div className="w-100 px-auto text-center">
+                    <form>
+                        <input type="text" />
+                    </form>
                     <Pagination
                         currentPage={this.state.currentPage}
-                        totalPages={5}
+                        totalPages={this.state.totalPages}
                         changeCurrentPage={this.changeCurrentPage}
                         theme="bottom-border"
                     />
-                    <h2>current Page:{this.state.currentPage}</h2>
+                    <h2>current Page: {this.state.currentPage}</h2>
                 </div>
             </div>
         );
@@ -71,7 +63,7 @@ const mapStateToProps = ({task}) => {
 
 const mapDispatchprops = (dispatch) => {
     return { 
-        onFetchData: () => dispatch(getTasks()) 
+        onFetchData: () => dispatch(getTasks())
     }
 }
 

@@ -20,7 +20,9 @@ class Header extends React.Component {
                     <div className="collapse navbar-collapse" id="mobile-nav">
                         <ul className="navbar-nav ml-auto">
                             <li className="nav-item">
-                                <button className="login_btn btn btn-secondary">Login</button>
+                                <Link className="navbar-brand" to="/login">
+                                    <button className="login_btn btn btn-secondary">Login</button>
+                                </Link>
                             </li>
                         </ul>
                         

@@ -8,19 +8,23 @@ import './App.css';
 // Components
 import Header from './components/layout/Header';
 import Landing from './components/layout/Landing';
+import Login from './components/auth/Login';
 
 // Redux
 import store from './redux/store/store';
 
-function App() {
-	return (
-		<Provider store={store}>
-			<Router>
-                <Header/>
-                <Route exact path="/" component={Landing} />
-            </Router>
-		</Provider>
-	);
+class App extends React.Component {
+	render() {
+		return (
+			<Provider store={store}>
+				<Router>
+					<Header/>
+					<Route exact path="/" component={Landing} />
+					<Route exact path="/login" component={Login} />
+				</Router>
+			</Provider>
+		);
+	}
 }
 
 export default App;
